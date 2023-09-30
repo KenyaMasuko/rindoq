@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "f6120851-63e6-4f8f-b007-2410c31cebd5",
+  "id": "b893d707-4e9e-4b0f-baf5-e7fa2e4534bb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "posts": {
@@ -30,10 +30,10 @@
         },
         "author_id": {
           "name": "author_id",
-          "type": "serial",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         }
       },
       "indexes": {

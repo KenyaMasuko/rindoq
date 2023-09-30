@@ -1,9 +1,9 @@
 import { Config } from "drizzle-kit";
 
-const drizzleConfig: Config = {
+const drizzleConfig = {
   schema: "./src/lib/db/schema.ts",
   out: "./src/lib/db/migrations",
   breakpoints: true,
-};
+} satisfies Config;
 
 export default drizzleConfig;

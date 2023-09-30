@@ -4,6 +4,7 @@ import { migrate } from "drizzle-orm/planetscale-serverless/migrator";
 import drizzleConfig from "../../drizzle.config";
 
 const runMigrate = async () => {
+  console.log("Connecting to database...");
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL is not set");
   }

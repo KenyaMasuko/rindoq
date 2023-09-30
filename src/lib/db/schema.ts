@@ -1,5 +1,5 @@
 import { InferInsertModel, InferSelectModel, relations } from "drizzle-orm";
-import { index, mysqlTable, serial, text } from "drizzle-orm/mysql-core";
+import { index, int, mysqlTable, serial, text } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
   id: serial("id").primaryKey(),
@@ -13,7 +13,7 @@ export const posts = mysqlTable(
     id: serial("id").primaryKey(),
     title: text("title").notNull(),
     content: text("content").notNull(),
-    authorId: serial("author_id").notNull(),
+    authorId: int("author_id").notNull(),
   },
   (table) => ({
     authorIdIndex: index("author_id").on(table.authorId),
