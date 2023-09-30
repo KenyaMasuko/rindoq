@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "db:generate": "pnpm drizzle-kit generate:mysql --config drizzle.config.ts",
-    "db:push": "pnpm with-env node -r esbuild-register src/lib/migrate.ts",
+    "db:push": "pnpm with-env node -r esbuild-register src/db/migrate.ts",
     "db:drop": "pnpm drizzle-kit drop --config drizzle.config.ts",
+    "db:select": "pnpm with-env node -r esbuild-register src/lib/select.ts",
     "with-env": "dotenv -e .env --"
   },
   "dependencies": {
