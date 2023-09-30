@@ -11,6 +11,7 @@
     "db:push": "pnpm with-env node -r esbuild-register src/db/migrate.ts",
     "db:drop": "pnpm drizzle-kit drop --config drizzle.config.ts",
     "db:select": "pnpm with-env node -r esbuild-register src/lib/select.ts",
+    "db:seed": "pnpm with-env node -r esbuild-register src/db/seed.ts",
     "with-env": "dotenv -e .env --"
   },
   "dependencies": {
