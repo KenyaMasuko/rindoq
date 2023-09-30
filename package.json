@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate": "pnpm drizzle-kit generate:mysql --config drizzle.config.ts"
   },
   "dependencies": {
     "@planetscale/database": "^1.11.0",
