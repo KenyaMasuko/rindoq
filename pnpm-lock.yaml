@@ -34,6 +34,9 @@ devDependencies:
   drizzle-kit:
     specifier: ^0.19.13
     version: 0.19.13
+  esbuild-register:
+    specifier: ^3.5.0
+    version: 3.5.0(esbuild@0.18.20)
   eslint:
     specifier: latest
     version: 8.50.0

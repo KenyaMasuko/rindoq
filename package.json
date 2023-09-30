@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:generate": "pnpm drizzle-kit generate:mysql --config drizzle.config.ts"
+    "db:generate": "pnpm drizzle-kit generate:mysql --config drizzle.config.ts",
+    "db:push": "pnpm with-env node -r esbuild-register src/db/migrate.ts",
+    "with-env": "dotenv -e .env --"
   },
   "dependencies": {
     "@planetscale/database": "^1.11.0",
@@ -21,6 +23,7 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "drizzle-kit": "^0.19.13",
+    "esbuild-register": "^3.5.0",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "typescript": "latest"
