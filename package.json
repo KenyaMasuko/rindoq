@@ -15,7 +15,9 @@
     "@mantine/form": "^7.1.0",
     "@mantine/hooks": "^7.1.0",
     "@mantine/notifications": "^7.1.0",
+    "@planetscale/database": "^1.11.0",
     "@tabler/icons-react": "^2.38.0",
+    "drizzle-orm": "^0.28.6",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
@@ -24,6 +26,8 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "dotenv-cli": "^7.3.0",
+    "drizzle-kit": "^0.19.13",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "^8.4.31",
