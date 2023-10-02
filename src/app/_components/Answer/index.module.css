@@ -1,0 +1,8 @@
+.button {
+  transition: all 0.3s;
+}
+
+.--button-hover {
+  background-color: var(--mantine-color-gray-3);
+  box-shadow: none;
+}
