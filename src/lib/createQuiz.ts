@@ -38,5 +38,5 @@ export const createQuiz = async (
     );
   });
 
-  return { message: "ok" };
+  return { message: "ok", id: quizId };
 };

@@ -27,7 +27,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
     return <div>クイズが見つかりませんでした</div>;
   }
 
-  console.log(result.score.filter((x) => x === 1).length);
   const completed = result.score.filter((x) => x === 1).length;
   const total = result.score.length;
 

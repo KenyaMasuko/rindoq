@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 
 export const createQuizAction = async (
   formData: any
-): Promise<{ message: string }> => {
+): Promise<{ message: string; id: string }> => {
   const { userId: creatorId } = auth();
   if (!creatorId) {
     throw new Error("ログインしてください");
@@ -122,7 +122,6 @@ export const recordResultAction = async (
     score: formData.score,
     challengerId,
   };
-  console.log(data);
 
   const res = await recordScore(data);
 
