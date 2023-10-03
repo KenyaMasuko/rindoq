@@ -23,6 +23,8 @@ export const createQuiz = async (
   });
 
   form.quiz.map(async ({ questions: qd, choices: cd }) => {
+    console.log(Number(quizId), quizId);
+
     const { insertId: questionId } = await db.insert(questions).values({
       quizId: Number(quizId),
       body: qd.body,
