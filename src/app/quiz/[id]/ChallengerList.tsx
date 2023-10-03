@@ -1,5 +1,5 @@
 import { getChallengers } from "@/lib/getChallengers";
-import { Avatar, Group, Paper, SimpleGrid, Text } from "@mantine/core";
+import { Avatar, Group, Paper, Text } from "@mantine/core";
 import classes from "./ChallengerList.module.css";
 
 export const ChallengerList: React.FC<{ id: string }> = async (props) => {

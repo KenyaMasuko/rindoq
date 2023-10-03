@@ -1,5 +1,16 @@
 import { getRecord } from "@/lib/getRecord";
-import { Text, Card, RingProgress, Flex, ListItem, List } from "@mantine/core";
+import {
+  Text,
+  Card,
+  RingProgress,
+  Flex,
+  ListItem,
+  List,
+  Stack,
+  Center,
+  Button,
+  Box,
+} from "@mantine/core";
 import classes from "./page.module.css";
 import { getQuiz } from "@/lib/getQuiz";
 import { Title, Container, ThemeIcon } from "@mantine/core";
@@ -8,9 +19,9 @@ import {
   IconCircleCheck,
   IconPointFilled,
 } from "@tabler/icons-react";
-import accordion from "./accordion.module.css";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "りんどQ | くいず結果",
@@ -21,7 +32,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const quiz = await getQuiz(Number(params.id));
 
   if (!result) {
-    redirect(`/${params.id}/play`);
+    redirect(`/quiz/${params.id}/play`);
   }
   if (!quiz) {
     return <div>クイズが見つかりませんでした</div>;
@@ -31,7 +42,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const total = result.score.length;
 
   return (
-    <>
+    <Box pb={100}>
       <Card withBorder p="xl" radius="md" className={classes.card}>
         <div className={classes.inner}>
           <div>
@@ -66,11 +77,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </div>
         </div>
       </Card>
-      <div className={accordion.wrapper}>
-        <Container size="sm">
-          <Title ta="center" className={accordion.title}>
-            解答と解説
-          </Title>
+      <Container size="sm" mt={50}>
+        <Title ta="center" c="blue">
+          解答と解説
+        </Title>
+        <Stack mt="lg">
           {quiz.questions.map((x, i) => (
             <Card
               key={x.id}
@@ -127,9 +138,14 @@ const Page = async ({ params }: { params: { id: string } }) => {
               <Text fz="md">{x.explanation}</Text>
             </Card>
           ))}
-        </Container>
-      </div>
-    </>
+        </Stack>
+      </Container>
+      <Center mt="xl">
+        <Link href="/">
+          <Button px="xl">一覧へ</Button>
+        </Link>
+      </Center>
+    </Box>
   );
 };
 

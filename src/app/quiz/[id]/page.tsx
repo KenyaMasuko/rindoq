@@ -10,7 +10,7 @@ import classes from "./page.module.css";
 import { getQuizWithChallenger } from "@/lib/getQuiz";
 import Link from "next/link";
 import { getRecord } from "@/lib/getRecord";
-import { ChallengerList } from "@/app/(quiz)/[id]/ChallengerList";
+import { ChallengerList } from "@/app/quiz/[id]/ChallengerList";
 import { Suspense } from "react";
 import { Metadata } from "next";
 
@@ -42,13 +42,13 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <Group className={classes.controls} justify="space-between">
           <Group justify="space-between" gap="md">
             {result ? (
-              <Link href={`/${params.id}/result`}>
+              <Link href={`/quiz/${params.id}/result`}>
                 <Button size="sm" className={classes.control} variant="light">
                   前回の回答を見る
                 </Button>
               </Link>
             ) : (
-              <Link href={`/${params.id}/play`}>
+              <Link href={`/quiz/${params.id}/play`}>
                 <Button size="sm" className={classes.control}>
                   このクイズで遊ぶ
                 </Button>

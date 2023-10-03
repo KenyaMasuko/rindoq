@@ -1,4 +1,4 @@
-import { CreateQuizForm } from "@/app/(quiz)/create/CreateQuizForm";
+import { CreateQuizForm } from "@/app/quiz/create/CreateQuizForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -25,7 +25,7 @@ export const QuizList = async () => {
             <Text size="sm" c="dimmed">
               {x.description}
             </Text>
-            <Link href={`/${x.id}`}>
+            <Link href={`/quiz/${x.id}`}>
               <Button
                 variant="light"
                 color="blue"
