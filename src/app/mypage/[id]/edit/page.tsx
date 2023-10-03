@@ -1,5 +1,10 @@
 import { QuizEditForm, QuizEditFormProps } from "@/app/mypage/[id]/edit/Form";
 import { getQuiz } from "@/lib/getQuiz";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "りんどQ | 編集",
+};
 
 export default async function Page({ params }: { params: { id: string } }) {
   const quiz = await getQuiz(Number(params.id));

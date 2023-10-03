@@ -18,6 +18,11 @@ import {
 import Link from "next/link";
 import classes from "./page.module.css";
 import { IconCircleCheck, IconCircleDashed } from "@tabler/icons-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "りんどQ | くいず詳細",
+};
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const quiz = await getQuizWithChallenger(Number(params.id));
@@ -82,8 +87,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
                   mt="xl"
                   center
                   icon={
-                    <ThemeIcon color="teal" size={24} radius="xl">
-                      <IconCircleCheck size="1rem" />
+                    <ThemeIcon color="blue" size={24} radius="xl">
+                      <IconCircleDashed size="1rem" />
                     </ThemeIcon>
                   }
                 >
@@ -92,8 +97,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
                       <ListItem
                         key={choice.id}
                         icon={
-                          <ThemeIcon color="blue" size={24} radius="xl">
-                            <IconCircleDashed size="1rem" />
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IconCircleCheck size="1rem" />
                           </ThemeIcon>
                         }
                       >
@@ -109,13 +114,17 @@ const Page = async ({ params }: { params: { id: string } }) => {
                     roundCaps
                     thickness={6}
                     size={150}
+                    // NOTE: joinedが0だとNaNになるので1にしている
                     sections={[
-                      { value: (correctAnswer / joined) * 100, color: "blue" },
+                      {
+                        value: (correctAnswer / (joined || 1)) * 100,
+                        color: "blue",
+                      },
                     ]}
                     label={
                       <div>
                         <Text ta="center" fz="lg" className={classes.label}>
-                          {((correctAnswer / joined) * 100).toFixed(0)}%
+                          {((correctAnswer / (joined || 1)) * 100).toFixed(0)}%
                         </Text>
                         <Text ta="center" fz="xs" c="dimmed">
                           正答率
