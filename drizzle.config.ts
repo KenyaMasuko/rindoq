@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { Config } from "drizzle-kit";
 
 const drizzleConfig = {
@@ -6,8 +7,7 @@ const drizzleConfig = {
   breakpoints: true,
   driver: "mysql2",
   dbCredentials: {
-    connectionString:
-      'mysql://ftp21khfrxwymb48iid3:pscale_pw_3us15kt80rvUaX4Whfg6HpVOHvnAZMtTiKRMfcWpk8B@aws.connect.psdb.cloud/rindoq?ssl={"rejectUnauthorized":true}',
+    connectionString: process.env.DATABASE_URL as string,
   },
 } satisfies Config;
 
