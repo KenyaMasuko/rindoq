@@ -97,7 +97,7 @@ export const CreateQuizForm = () => {
       <span>
         <Flex gap="xs" align="center" justify="center">
           <IconCircleCheck size={28} color="green" />
-          <Text fz={14}>くいずを更新しました。</Text>
+          <Text fz={14}>くいずを作成しました。</Text>
         </Flex>
         <Center mt={5}>
           <Link
