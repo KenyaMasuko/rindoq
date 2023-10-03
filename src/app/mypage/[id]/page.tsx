@@ -40,8 +40,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
             <Title h={1}>{quiz.title}</Title>
           </div>
 
-          <Link href={`/mypage/${params.id}/edit`}>
-            <Button>編集する</Button>
+          <Link href="/mypage">
+            <Button type="button" variant="outline">
+              戻る
+            </Button>
           </Link>
         </Flex>
         <div>
@@ -144,9 +146,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
       <form action={deleteQuizAction}>
         <input name="id" type="hidden" value={params.id} />
         <Flex mt="xl" gap={30} justify="center">
-          <Link href="/mypage">
-            <Button type="button">まいぺーじへ</Button>
+          <Link href={`/mypage/${params.id}/edit`}>
+            <Button>編集する</Button>
           </Link>
+
           <Confirm>くいずを削除する</Confirm>
         </Flex>
       </form>

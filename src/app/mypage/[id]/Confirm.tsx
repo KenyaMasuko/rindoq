@@ -14,7 +14,7 @@ export const Confirm: React.FC<{ children: React.ReactNode }> = ({
       }}
       color="red"
       type="submit"
-      variant="outline"
+      variant="light"
     >
       {children}
     </Button>

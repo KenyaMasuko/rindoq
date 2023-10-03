@@ -24,7 +24,7 @@ const quizLinks = [
     description: "ユーザーが作成したクイズを一覧で表示します。",
   },
   {
-    href: "/create",
+    href: "/quiz/create",
     title: "くいずを作成",
     description: "じぶんだけのクイズを作成します。",
   },

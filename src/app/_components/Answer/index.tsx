@@ -28,7 +28,7 @@ export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
       return;
     }
 
-    router.push(`/${props?.quiz?.id}/result`);
+    router.push(`/quiz/${props?.quiz?.id}/result`);
   };
 
   const questionLength = props.quiz?.questions.length ?? 0;
@@ -83,7 +83,7 @@ export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
       ) : (
         <Button
           size="md"
-          disabled={answer.length !== props.quiz?.questions.length}
+          disabled={answer.length !== questionLength}
           fullWidth
           mt="md"
           radius="md"

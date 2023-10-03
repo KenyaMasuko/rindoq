@@ -25,7 +25,7 @@ export const PlayedQuizList = async () => {
             <Text size="sm" c="dimmed">
               {x.quiz.description}
             </Text>
-            <Link href={`/${x.quiz.id}`}>
+            <Link href={`/quiz/${x.quiz.id}`}>
               <Button
                 variant="light"
                 color="blue"

@@ -1,4 +1,4 @@
-import { QuizList } from "@/app/(quiz)/QuizList";
+import { QuizList } from "@/app/QuizList";
 import { SimpleGrid, Skeleton } from "@mantine/core";
 import { Metadata } from "next";
 import { Suspense } from "react";

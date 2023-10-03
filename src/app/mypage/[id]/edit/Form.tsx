@@ -136,7 +136,9 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
         <Flex justify="space-between" align="center">
           <Title order={1}>くいずを作成</Title>
           <Link href={`/mypage/${props.data.id}`}>
-            <Button variant="outline">戻る</Button>
+            <Button variant="outline" type="button">
+              戻る
+            </Button>
           </Link>
         </Flex>
         <Stack mt="md">

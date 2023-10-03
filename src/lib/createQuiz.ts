@@ -32,14 +32,6 @@ export const createQuiz = async (
       explanation: qd.explanation,
     });
 
-    console.log("questionId str", questionId, "quizId str", quizId);
-    console.log(
-      "questionId num",
-      Number(questionId),
-      "quizId num",
-      Number(quizId)
-    );
-
     await db.insert(choices).values(
       cd.map((choice) => ({
         questionId: Number(questionId),
