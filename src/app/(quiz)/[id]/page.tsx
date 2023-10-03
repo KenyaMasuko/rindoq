@@ -12,6 +12,11 @@ import Link from "next/link";
 import { getRecord } from "@/lib/getRecord";
 import { ChallengerList } from "@/app/(quiz)/[id]/ChallengerList";
 import { Suspense } from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "りんどQ | くいず詳細",
+};
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const quiz = await getQuizWithChallenger(Number(params.id));

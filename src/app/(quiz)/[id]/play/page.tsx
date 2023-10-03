@@ -1,5 +1,10 @@
 import { Answer } from "@/app/_components/Answer";
 import { getQuiz } from "@/lib/getQuiz";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "りんどQ | くいずで遊ぶ",
+};
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const quiz = await getQuiz(Number(params.id));

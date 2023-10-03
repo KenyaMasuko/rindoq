@@ -3,7 +3,6 @@
 import {
   Alert,
   Anchor,
-  Box,
   Button,
   Center,
   Flex,
@@ -21,65 +20,50 @@ import { IconCircleCheck, IconInfoCircle, IconPlus } from "@tabler/icons-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import * as v from "valibot";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
+import toast, { Toaster } from "react-hot-toast";
 
 const CHOICES_NUM = 4;
 
 const schema = v.object({
-  id: v.number(),
   title: v.string("タイトル", [v.minLength(1, "タイトルを入力してください。")]),
   description: v.string("説明文", [
     v.minLength(1, "説明文を入力してください。"),
   ]),
   quiz: v.array(
     v.object({
-      id: v.nullable(v.number()),
       title: v.string("問題文", [v.minLength(1, "問題文を入力してください。")]),
       explanation: v.string("解説文", [
         v.minLength(1, "解説文を入力してください。"),
       ]),
-      choice1: v.object({
-        id: v.nullable(v.number()),
-        value: v.string("選択肢1", [
-          v.minLength(1, "選択肢1を入力してください。"),
-        ]),
-      }),
-      choice2: v.object({
-        id: v.nullable(v.number()),
-        value: v.string("選択肢1", [
-          v.minLength(1, "選択肢1を入力してください。"),
-        ]),
-      }),
-      choice3: v.object({
-        id: v.nullable(v.number()),
-        value: v.string("選択肢1", [
-          v.minLength(1, "選択肢1を入力してください。"),
-        ]),
-      }),
-      choice4: v.object({
-        id: v.nullable(v.number()),
-        value: v.string("選択肢1", [
-          v.minLength(1, "選択肢1を入力してください。"),
-        ]),
-      }),
-      isCorrect: v.string([v.minLength(1)]),
+      choice1: v.string("選択肢1", [
+        v.minLength(1, "選択肢1を入力してください。"),
+      ]),
+      choice2: v.string("選択肢2", [
+        v.minLength(1, "選択肢2を入力してください。"),
+      ]),
+      choice3: v.string("選択肢3", [
+        v.minLength(1, "選択肢3を入力してください。"),
+      ]),
+      choice4: v.string("選択肢4", [
+        v.minLength(1, "選択肢4を入力してください。"),
+      ]),
+      isCorrect: v.string("正解の選択肢", [
+        v.minLength(1, "正解の選択肢を選択してください。"),
+      ]),
     }),
     [v.minLength(1, "問題を1つ以上入力してください。")]
   ),
 });
 
-export type QuizEditFormProps = v.Input<typeof schema>;
-
-export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
+export const CreateQuizForm = () => {
   const {
     control,
     register,
     handleSubmit,
-    formState: { errors, isValid, isDirty, isSubmitting },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: valibotResolver(schema),
-    defaultValues: props.data,
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -88,10 +72,10 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    if (!confirm("くいずを更新しますか？")) return;
+    if (!confirm("くいずを作成しますか？")) return;
 
-    const res = await fetch(`/api/quiz`, {
-      method: "PUT",
+    const res = await fetch("/api/quiz", {
+      method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
@@ -103,39 +87,39 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
       return;
     }
 
-    success();
+    const json = (await res.json()) as { id: string };
+
+    success(json.id);
   });
 
-  const success = () =>
-    toast((t) => {
-      return (
-        <span>
-          <Flex gap="xs" align="center" justify="center">
-            <IconCircleCheck size={28} color="green" />
-            <Text fz={14}>くいずを更新しました。</Text>
-          </Flex>
-          <Center mt={5}>
-            <Link
-              href={`/mypage/${props.data.id}`}
-              onClick={() => toast.dismiss(t.id)}
-              prefetch={false}
-            >
-              <Anchor fz={14} fw="bold">
-                くいずを確認する
-              </Anchor>
-            </Link>
-          </Center>
-        </span>
-      );
-    });
-  const error = () => toast.error("くいずの更新に失敗しました。");
+  const success = (id: string) =>
+    toast((t) => (
+      <span>
+        <Flex gap="xs" align="center" justify="center">
+          <IconCircleCheck size={28} color="green" />
+          <Text fz={14}>くいずを作成しました。</Text>
+        </Flex>
+        <Center mt={5}>
+          <Link
+            href={`/mypage/${id}`}
+            onClick={() => toast.dismiss(t.id)}
+            prefetch={false}
+          >
+            <Anchor fz={14} fw="bold">
+              くいずを確認する
+            </Anchor>
+          </Link>
+        </Center>
+      </span>
+    ));
+  const error = () => toast.error("くいずの作成に失敗しました。");
 
   return (
-    <Box pb="xl">
+    <main>
       <form onSubmit={onSubmit}>
         <Flex justify="space-between" align="center">
           <Title order={1}>くいずを作成</Title>
-          <Link href={`/mypage/${props.data.id}`}>
+          <Link href={`/`}>
             <Button variant="outline">戻る</Button>
           </Link>
         </Flex>
@@ -169,7 +153,7 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
 
         {fields.map((field, index) => (
           <div key={field.id}>
-            <Group justify="space-between" mt="sm">
+            <Group justify="space-between">
               <Title order={3}>問題{index + 1}</Title>
               <Button type="button" color="red" onClick={() => remove(index)}>
                 削除
@@ -200,17 +184,9 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
                     <Controller
                       control={control}
                       name={`quiz.${index}.isCorrect`}
-                      render={({ field }) => {
-                        const isAnswer = i + 1 === Number(field.value);
-                        return (
-                          <Radio
-                            defaultChecked={isAnswer}
-                            {...field}
-                            value={i + 1}
-                          />
-                        );
-                      }}
+                      render={({ field }) => <Radio {...field} value={i + 1} />}
                     />
+
                     <TextInput
                       placeholder="東京都"
                       style={{ flexGrow: 1 }}
@@ -219,9 +195,7 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
                           ?.message as string
                       }
                       required
-                      {...register(
-                        `quiz.${index}.choice${(i + 1) as 1 | 2 | 3 | 4}.value`
-                      )}
+                      {...register(`quiz.${index}.choice${i + 1}`)}
                     />
                   </Flex>
                 </GridCol>
@@ -232,13 +206,12 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
         <Flex mt="xl" gap={30} justify="center">
           <Button
             type="submit"
-            disabled={!isValid || !isDirty}
+            disabled={!isValid}
             loading={isSubmitting}
             px="xl"
           >
-            更新
+            保存
           </Button>
-
           <Button
             type="button"
             onClick={() =>
@@ -246,22 +219,10 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
                 id: null,
                 title: "",
                 explanation: "",
-                choice1: {
-                  id: null,
-                  value: "",
-                },
-                choice2: {
-                  id: null,
-                  value: "",
-                },
-                choice3: {
-                  id: null,
-                  value: "",
-                },
-                choice4: {
-                  id: null,
-                  value: "",
-                },
+                choice1: "",
+                choice2: "",
+                choice3: "",
+                choice4: "",
                 isCorrect: "",
               })
             }
@@ -274,6 +235,6 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
         </Flex>
       </form>
       <Toaster />
-    </Box>
+    </main>
   );
 };

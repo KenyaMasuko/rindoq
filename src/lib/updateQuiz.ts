@@ -17,7 +17,6 @@ export const updateQuiz = async (
     }[];
   }
 ) => {
-  console.log("db", form);
   await db
     .update(quizzes)
     .set({

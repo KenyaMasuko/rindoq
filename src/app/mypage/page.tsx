@@ -1,7 +1,12 @@
 import { CreatedQuizList } from "@/app/mypage/CreatedQuizList";
 import { PlayedQuizList } from "@/app/mypage/PlayedQuizList";
 import { Box, SimpleGrid, Skeleton, Stack, Text } from "@mantine/core";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "りんどQ | マイページ",
+};
 
 const Page = async () => {
   return (

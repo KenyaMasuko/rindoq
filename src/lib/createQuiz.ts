@@ -22,12 +22,23 @@ export const createQuiz = async (
     creatorId: form.creatorId,
   });
 
-  form.quiz.map(async ({ questions: qd, choices: cd }) => {
+  for (let i = 0; i < form.quiz.length; i++) {
+    const qd = form.quiz[i].questions;
+    const cd = form.quiz[i].choices;
+
     const { insertId: questionId } = await db.insert(questions).values({
       quizId: Number(quizId),
       body: qd.body,
       explanation: qd.explanation,
     });
+
+    console.log("questionId str", questionId, "quizId str", quizId);
+    console.log(
+      "questionId num",
+      Number(questionId),
+      "quizId num",
+      Number(quizId)
+    );
 
     await db.insert(choices).values(
       cd.map((choice) => ({
@@ -36,7 +47,6 @@ export const createQuiz = async (
         isCorrect: choice.isCorrect,
       }))
     );
-  });
-
-  return { message: "ok" };
+  }
+  return { message: "ok", id: quizId };
 };

@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   const res = await createQuizAction(data);
   if (res.message !== "ok") throw new Error(res.message);
 
-  return NextResponse.json({ message: "ok" });
+  return NextResponse.json({ message: "ok", id: res.id });
 }
 
 export async function PUT(req: Request) {

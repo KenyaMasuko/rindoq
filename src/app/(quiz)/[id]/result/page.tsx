@@ -1,18 +1,20 @@
 import { getRecord } from "@/lib/getRecord";
-import {
-  Text,
-  Card,
-  RingProgress,
-  AccordionItem,
-  AccordionControl,
-  AccordionPanel,
-} from "@mantine/core";
+import { Text, Card, RingProgress, Flex, ListItem, List } from "@mantine/core";
 import classes from "./page.module.css";
 import { getQuiz } from "@/lib/getQuiz";
-import { Title, Container, Accordion, ThemeIcon, rem } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { Title, Container, ThemeIcon } from "@mantine/core";
+import {
+  IconAlertCircleFilled,
+  IconCircleCheck,
+  IconPointFilled,
+} from "@tabler/icons-react";
 import accordion from "./accordion.module.css";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "りんどQ | くいず結果",
+};
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const result = await getRecord(Number(params.id));
@@ -25,7 +27,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
     return <div>クイズが見つかりませんでした</div>;
   }
 
-  console.log(result.score.filter((x) => x === 1).length);
   const completed = result.score.filter((x) => x === 1).length;
   const total = result.score.length;
 
@@ -70,39 +71,62 @@ const Page = async ({ params }: { params: { id: string } }) => {
           <Title ta="center" className={accordion.title}>
             解答と解説
           </Title>
-          <Accordion
-            chevronPosition="right"
-            defaultValue="reset-password"
-            chevronSize={26}
-            variant="separated"
-            disableChevronRotation
-            styles={{
-              label: { color: "var(--mantine-color-black)" },
-              item: { border: 0 },
-            }}
-            chevron={
-              <ThemeIcon radius="xl" className={accordion.gradient} size={26}>
-                <IconPlus />
-              </ThemeIcon>
-            }
-          >
-            {quiz.questions.map((x, i) => {
-              return (
-                <AccordionItem
-                  key={x.id}
-                  className={accordion.item}
-                  value={x.body}
+          {quiz.questions.map((x, i) => (
+            <Card
+              key={x.id}
+              withBorder
+              p="xl"
+              radius="md"
+              className={classes.card}
+            >
+              <Text fz="xs" c="dimmed">
+                問題{i + 1}
+              </Text>
+              <Text fz="xl" fw="bold">
+                {x.body}
+              </Text>
+              <Flex align="center">
+                <List
+                  spacing="xs"
+                  size="sm"
+                  mt="xl"
+                  center
+                  icon={
+                    <IconPointFilled
+                      style={{ color: "var(--mantine-color-gray-7)" }}
+                    />
+                  }
                 >
-                  <AccordionControl>
-                    問{i + 1}
-                    {(result.score[i] && "○") || "×"}
-                    {x.body}
-                  </AccordionControl>
-                  <AccordionPanel>{x.explanation}</AccordionPanel>
-                </AccordionItem>
-              );
-            })}
-          </Accordion>
+                  {x.choices.map((choice) => {
+                    return choice.isCorrect ? (
+                      <ListItem
+                        key={choice.id}
+                        icon={
+                          result.score[i] ? (
+                            <ThemeIcon color="teal" size={24} radius="xl">
+                              <IconCircleCheck size="1rem" />
+                            </ThemeIcon>
+                          ) : (
+                            <ThemeIcon color="red" size={24} radius="xl">
+                              <IconAlertCircleFilled size="1rem" />
+                            </ThemeIcon>
+                          )
+                        }
+                      >
+                        {choice.body}
+                      </ListItem>
+                    ) : (
+                      <ListItem key={choice.id}>{choice.body}</ListItem>
+                    );
+                  })}
+                </List>
+              </Flex>
+              <Text fz="xs" c="dimmed" mt="xl">
+                解説
+              </Text>
+              <Text fz="md">{x.explanation}</Text>
+            </Card>
+          ))}
         </Container>
       </div>
     </>
