@@ -76,7 +76,7 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
     control,
     register,
     handleSubmit,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid, isDirty, isSubmitting },
   } = useForm({
     resolver: valibotResolver(schema),
     defaultValues: props.data,
@@ -88,6 +88,8 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
   });
 
   const onSubmit = handleSubmit(async (data) => {
+    if (!confirm("くいずを更新しますか？")) return;
+
     const res = await fetch(`/api/quiz`, {
       method: "PUT",
       body: JSON.stringify(data),
@@ -95,6 +97,7 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
         "Content-Type": "application/json",
       },
     });
+
     if (!res.ok) {
       error();
       return;
@@ -104,24 +107,27 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
   });
 
   const success = () =>
-    toast((t) => (
-      <span>
-        <Flex gap="xs" align="center" justify="center">
-          <IconCircleCheck size={28} color="green" />
-          <Text fz={14}>くいずを更新しました。</Text>
-        </Flex>
-        <Center mt={5}>
-          <Link
-            href={`/mypage/${props.data.id}`}
-            onClick={() => toast.dismiss(t.id)}
-          >
-            <Anchor fz={14} fw="bold">
-              くいずを確認する
-            </Anchor>
-          </Link>
-        </Center>
-      </span>
-    ));
+    toast((t) => {
+      return (
+        <span>
+          <Flex gap="xs" align="center" justify="center">
+            <IconCircleCheck size={28} color="green" />
+            <Text fz={14}>くいずを更新しました。</Text>
+          </Flex>
+          <Center mt={5}>
+            <Link
+              href={`/mypage/${props.data.id}`}
+              onClick={() => toast.dismiss(t.id)}
+              prefetch={false}
+            >
+              <Anchor fz={14} fw="bold">
+                くいずを確認する
+              </Anchor>
+            </Link>
+          </Center>
+        </span>
+      );
+    });
   const error = () => toast.error("くいずの更新に失敗しました。");
 
   return (
@@ -224,7 +230,12 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
           </div>
         ))}
         <Flex mt="xl" gap={30} justify="center">
-          <Button type="submit" disabled={!isValid || !isDirty} px="xl">
+          <Button
+            type="submit"
+            disabled={!isValid || !isDirty}
+            loading={isSubmitting}
+            px="xl"
+          >
             更新
           </Button>
 
@@ -258,7 +269,7 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
             variant="outline"
             px="lg"
           >
-            追加
+            問題を追加
           </Button>
         </Flex>
       </form>
