@@ -2,11 +2,13 @@
 
 import { GetQuiz } from "@/lib/getQuiz";
 import { Button, Grid, GridCol, Group, Progress, Text } from "@mantine/core";
+// TODO: Reactのみ残す
 import React, { FormEvent, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
   const [answer, setAnswer] = React.useState<number[]>([]);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [currentQuestionNum, setCurrentQuestionNum] = React.useState(0);
   const currentQuestion = useMemo(
     () => props?.quiz?.questions[currentQuestionNum],
@@ -15,20 +17,30 @@ export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const res = await fetch("/api/quiz/result", {
-      method: "POST",
-      body: JSON.stringify({
-        quizId: props?.quiz?.id,
-        score: answer,
-      }),
-    });
-    if (!res.ok) {
-      alert("エラーが発生しました。");
-      return;
-    }
+    try {
+      e.preventDefault();
+      setIsSubmitting(true);
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      const res = await fetch("/api/quiz/result", {
+        method: "POST",
+        body: JSON.stringify({
+          quizId: props?.quiz?.id,
+          score: answer,
+        }),
+      });
+      if (!res.ok) {
+        // TODO: toastでエラーを表示する
+        throw new Error();
+      }
 
-    router.push(`/quiz/${props?.quiz?.id}/result`);
+      router.push(`/quiz/${props?.quiz?.id}/result`);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const questionLength = props.quiz?.questions.length ?? 0;
@@ -88,6 +100,7 @@ export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
           mt="md"
           radius="md"
           type="submit"
+          loading={isSubmitting}
         >
           結果を見る
         </Button>
