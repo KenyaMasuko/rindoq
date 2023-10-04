@@ -19,7 +19,6 @@ export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
     try {
       e.preventDefault();
       setIsSubmitting(true);
-      await new Promise((resolve) => setTimeout(resolve, 3000));
       const res = await fetch("/api/quiz/result", {
         method: "POST",
         body: JSON.stringify({
@@ -36,9 +35,8 @@ export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
+        router.push("/");
       }
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
