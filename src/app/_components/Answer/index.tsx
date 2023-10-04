@@ -2,21 +2,20 @@
 
 import { GetQuiz } from "@/lib/getQuiz";
 import { Button, Grid, GridCol, Group, Progress, Text } from "@mantine/core";
-// TODO: Reactのみ残す
-import React, { FormEvent, useMemo } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 
 export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
   const [answer, setAnswer] = React.useState<number[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [currentQuestionNum, setCurrentQuestionNum] = React.useState(0);
-  const currentQuestion = useMemo(
+  const currentQuestion = React.useMemo(
     () => props?.quiz?.questions[currentQuestionNum],
     [currentQuestionNum, props.quiz]
   );
   const router = useRouter();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
       setIsSubmitting(true);
