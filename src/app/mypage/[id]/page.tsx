@@ -18,6 +18,7 @@ import Link from "next/link";
 import classes from "./page.module.css";
 import { IconCircleCheck, IconCircleDashed } from "@tabler/icons-react";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "りんどQ | くいず詳細",
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const quiz = await getQuizWithChallenger(Number(params.id));
-  if (!quiz) return <div>くいずが見つかりませんでした</div>;
+  if (!quiz) return notFound();
 
   const joined = quiz.challengers.length;
 

@@ -1,6 +1,7 @@
 import { QuizEditForm, QuizEditFormProps } from "@/app/mypage/[id]/edit/Form";
 import { getQuiz } from "@/lib/getQuiz";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "りんどQ | 編集",
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: { id: string } }) {
   const quiz = await getQuiz(Number(params.id));
-  if (!quiz) return <div>くいずが見つかりませんでした。</div>;
+  if (!quiz) return notFound();
 
   const data = {
     id: quiz.id,
