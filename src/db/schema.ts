@@ -24,10 +24,10 @@ export const quizzes = mysqlTable("quizzes", {
 });
 export const quizzesRelations = relations(quizzes, ({ many }) => ({
   questions: many(questions),
-  challengers: many(challnegers),
+  challengers: many(challengers),
 }));
 
-export const challnegers = mysqlTable("challnegers", {
+export const challengers = mysqlTable("challengers", {
   id: serial("id").primaryKey(),
   quizId: int("quiz_id").notNull(),
   score: json("score").$type<number[]>().notNull(),
@@ -40,9 +40,9 @@ export const challnegers = mysqlTable("challnegers", {
     .notNull()
     .onUpdateNow(),
 });
-export const challengersRelations = relations(challnegers, ({ one }) => ({
+export const challengersRelations = relations(challengers, ({ one }) => ({
   quiz: one(quizzes, {
-    fields: [challnegers.quizId],
+    fields: [challengers.quizId],
     references: [quizzes.id],
   }),
 }));
@@ -78,8 +78,8 @@ export const choicesRelations = relations(choices, ({ one }) => ({
 export type Quizzes = InferSelectModel<typeof quizzes>;
 export type NewQuiz = InferInsertModel<typeof quizzes>;
 
-export type Challnegers = InferSelectModel<typeof challnegers>;
-export type NewChallnegers = InferInsertModel<typeof challnegers>;
+export type challengers = InferSelectModel<typeof challengers>;
+export type NewChallengers = InferInsertModel<typeof challengers>;
 
 export type Questions = InferSelectModel<typeof questions>;
 export type NewQuestions = InferInsertModel<typeof questions>;

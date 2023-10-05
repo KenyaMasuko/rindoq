@@ -2,10 +2,8 @@
 
 import {
   Alert,
-  Anchor,
   Box,
   Button,
-  Center,
   Flex,
   Grid,
   GridCol,
@@ -17,12 +15,12 @@ import {
   Textarea,
   Title,
 } from "@mantine/core";
-import { IconCircleCheck, IconInfoCircle, IconPlus } from "@tabler/icons-react";
+import { IconInfoCircle, IconPlus } from "@tabler/icons-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import * as v from "valibot";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
+import { BurnedToast, MyToaster, Toast } from "@/app/_components/Toast";
 
 const CHOICES_NUM = 4;
 
@@ -99,36 +97,18 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
     });
 
     if (!res.ok) {
-      error();
+      BurnedToast({
+        errorMessage: "くいずの更新に失敗しました。",
+      });
       return;
     }
 
-    success();
-  });
-
-  const success = () =>
-    toast((t) => {
-      return (
-        <span>
-          <Flex gap="xs" align="center" justify="center">
-            <IconCircleCheck size={28} color="green" />
-            <Text fz={14}>くいずを更新しました。</Text>
-          </Flex>
-          <Center mt={5}>
-            <Link
-              href={`/mypage/${props.data.id}`}
-              onClick={() => toast.dismiss(t.id)}
-              prefetch={false}
-            >
-              <Anchor fz={14} fw="bold">
-                くいずを確認する
-              </Anchor>
-            </Link>
-          </Center>
-        </span>
-      );
+    Toast({
+      alertMessage: "くいずを更新しました。",
+      linkText: "くいずを確認する",
+      id: props.data.id.toString(),
     });
-  const error = () => toast.error("くいずの更新に失敗しました。");
+  });
 
   return (
     <Box pb="xl">
@@ -275,7 +255,7 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
           </Button>
         </Flex>
       </form>
-      <Toaster />
+      <MyToaster />
     </Box>
   );
 };

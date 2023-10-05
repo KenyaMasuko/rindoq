@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { challnegers, quizzes } from "@/db/schema";
+import { challengers, quizzes } from "@/db/schema";
 import { auth } from "@clerk/nextjs";
 import { clerkClient } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
@@ -48,8 +48,8 @@ export const getPlayedQuizzes = async () => {
     throw new Error("ログインしてください");
   }
 
-  const playedQuizzes = await db.query.challnegers.findMany({
-    where: eq(challnegers.challengerId, challengerId),
+  const playedQuizzes = await db.query.challengers.findMany({
+    where: eq(challengers.challengerId, challengerId),
     with: {
       quiz: true,
     },
