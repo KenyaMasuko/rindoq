@@ -3,8 +3,13 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const data = await req.json();
-  const res = await recordResultAction(data);
-  if (res.message !== "ok") throw new Error(res.message);
-
-  return NextResponse.json({ message: "ok" });
+  try {
+    const res = await recordResultAction(data);
+    const { id } = res;
+    return NextResponse.json({ id });
+  } catch (e) {
+    if (e instanceof Error) {
+      return NextResponse.json({ error: e.message }, { status: 400 });
+    }
+  }
 }

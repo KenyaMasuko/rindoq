@@ -26,17 +26,18 @@ export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
           score: answer,
         }),
       });
+      const json = await res.json();
       if (!res.ok) {
-        // TODO: toastでエラーを表示する
-        throw new Error();
+        throw new Error(json.error);
       }
-
-      router.push(`/quiz/${props?.quiz?.id}/result`);
     } catch (error) {
       if (error instanceof Error) {
-        console.error(error.message);
-        router.push("/");
+        // TODO: toastでエラーを表示する
+        alert(error.message);
       }
+    } finally {
+      router.refresh();
+      router.push(`/quiz/${props?.quiz?.id}/result`);
     }
   };
 
