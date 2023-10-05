@@ -1,20 +1,19 @@
 import { db } from "@/db";
-// TODO: challengerのタイポ修正
-import { NewChallnegers, challnegers } from "@/db/schema";
+import { NewChallengers, challengers } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
-export const recordScore = async (score: NewChallnegers) => {
+export const recordScore = async (score: NewChallengers) => {
   const result = await db.transaction(async (tx) => {
-    const challenger = await tx.query.challnegers.findFirst({
+    const challenger = await tx.query.challengers.findFirst({
       where: and(
-        eq(challnegers.quizId, score.quizId),
-        eq(challnegers.challengerId, score.challengerId)
+        eq(challengers.quizId, score.quizId),
+        eq(challengers.challengerId, score.challengerId)
       ),
     });
     if (challenger) {
       return { id: score.challengerId };
     }
-    const { insertId } = await tx.insert(challnegers).values({
+    const { insertId } = await tx.insert(challengers).values({
       quizId: score.quizId,
       score: score.score,
       challengerId: score.challengerId,
