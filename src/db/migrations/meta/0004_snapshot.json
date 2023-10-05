@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "1068583c-d5d7-4cb3-894a-6e8104ee733a",
-  "prevId": "25bf63fe-de58-4321-9432-b045f29eabfd",
+  "id": "73df28ae-8477-42f0-a5dd-bc2728e9672c",
+  "prevId": "1068583c-d5d7-4cb3-894a-6e8104ee733a",
   "tables": {
     "challengers": {
       "name": "challengers",
@@ -152,75 +152,12 @@
         }
       },
       "uniqueConstraints": {}
-    },
-    "quizzes": {
-      "name": "quizzes",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "creator_id": {
-          "name": "creator_id",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "title": {
-          "name": "title",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
-          "default": "(now())"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "quizzes_id": {
-          "name": "quizzes_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
     }
   },
   "schemas": {},
   "_meta": {
     "schemas": {},
-    "tables": {
-      "\"challnegers\"": "\"challengers\""
-    },
+    "tables": {},
     "columns": {}
   }
 }
