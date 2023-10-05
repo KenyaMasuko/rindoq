@@ -22,6 +22,7 @@ import * as v from "valibot";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import Link from "next/link";
 import { BurnedToast, MyToaster, Toast } from "@/app/_components/Toast";
+import { useRouter } from "next/navigation";
 
 const CHOICES_NUM = 4;
 
@@ -82,6 +83,8 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
     defaultValues: props.data,
   });
 
+  const router = useRouter();
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "quiz",
@@ -97,6 +100,8 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
         "Content-Type": "application/json",
       },
     });
+
+    router.refresh();
 
     if (!res.ok) {
       BurnedToast({

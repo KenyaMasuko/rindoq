@@ -48,10 +48,12 @@ export const getPlayedQuizzes = async () => {
     throw new Error("ログインしてください");
   }
 
-  const playedQuizzes = await db.query.challengers.findMany({
-    where: eq(challengers.challengerId, challengerId),
+  const playedQuizzes = await db.query.quizzes.findMany({
+    where: eq(quizzes.isPublic, 1),
     with: {
-      quiz: true,
+      challengers: {
+        where: eq(challengers.challengerId, challengerId),
+      },
     },
   });
 
