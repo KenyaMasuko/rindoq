@@ -4,7 +4,9 @@ import Link from "next/link";
 import React from "react";
 
 export const QuizList = async () => {
-  const quiz = await getQuizzes();
+  const quiz = await getQuizzes({
+    includePrivateQuiz: false,
+  });
   return (
     <>
       {quiz.map((x) => (

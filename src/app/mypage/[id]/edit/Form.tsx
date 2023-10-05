@@ -4,6 +4,7 @@ import {
   Alert,
   Box,
   Button,
+  Checkbox,
   Flex,
   Grid,
   GridCol,
@@ -30,6 +31,7 @@ const schema = v.object({
   description: v.string("説明文", [
     v.minLength(1, "説明文を入力してください。"),
   ]),
+  isPublic: v.transform(v.boolean(), (input) => Number(input)),
   quiz: v.array(
     v.object({
       id: v.nullable(v.number()),
@@ -136,6 +138,7 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
             required
             {...register("description")}
           />
+          <Checkbox label="問題を公開する" {...register("isPublic")} />
         </Stack>
         <Alert
           mt={30}
