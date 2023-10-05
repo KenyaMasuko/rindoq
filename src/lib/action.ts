@@ -46,6 +46,7 @@ export const createQuizAction = async (
   const data = {
     title: formData.title,
     description: formData.description,
+    isPublic: formData.isPublic,
     creatorId,
     quiz: choices,
   };
@@ -100,6 +101,7 @@ export const updateQuizAction = async (
     id: formData.id,
     title: formData.title,
     description: formData.description,
+    isPublic: formData.isPublic,
     creatorId,
     quiz: choices,
   };

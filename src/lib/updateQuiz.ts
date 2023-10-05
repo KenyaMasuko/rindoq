@@ -22,6 +22,7 @@ export const updateQuiz = async (
     .set({
       title: form.title,
       description: form.description,
+      isPublic: form.isPublic,
     })
     .where(eq(quizzes.id, Number(form.id)));
 

@@ -15,6 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     id: quiz.id,
     title: quiz.title,
     description: quiz.description as string,
+    isPublic: !!quiz.isPublic,
     quiz: quiz.questions.map((q) => ({
       id: q.id,
       title: q.body,

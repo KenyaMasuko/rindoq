@@ -19,13 +19,13 @@ export const PlayedQuizList = async () => {
         >
           <Stack justify="space-between" h="100%">
             <Group justify="space-between" mt="md" mb="xs">
-              <Text fw={500}>{x.quiz.title}</Text>
+              <Text fw={500}>{x.title}</Text>
             </Group>
 
             <Text size="sm" c="dimmed">
-              {x.quiz.description}
+              {x.description}
             </Text>
-            <Link href={`/quiz/${x.quiz.id}`}>
+            <Link href={`/quiz/${x.id}`}>
               <Button
                 variant="light"
                 color="blue"

@@ -4,6 +4,7 @@ import {
   Alert,
   Box,
   Button,
+  Checkbox,
   Flex,
   Grid,
   GridCol,
@@ -21,6 +22,7 @@ import * as v from "valibot";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import Link from "next/link";
 import { BurnedToast, MyToaster, Toast } from "@/app/_components/Toast";
+import { useRouter } from "next/navigation";
 
 const CHOICES_NUM = 4;
 
@@ -30,6 +32,7 @@ const schema = v.object({
   description: v.string("説明文", [
     v.minLength(1, "説明文を入力してください。"),
   ]),
+  isPublic: v.transform(v.boolean(), (input) => Number(input)),
   quiz: v.array(
     v.object({
       id: v.nullable(v.number()),
@@ -80,6 +83,8 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
     defaultValues: props.data,
   });
 
+  const router = useRouter();
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "quiz",
@@ -95,6 +100,8 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
         "Content-Type": "application/json",
       },
     });
+
+    router.refresh();
 
     if (!res.ok) {
       BurnedToast({
@@ -136,6 +143,7 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
             required
             {...register("description")}
           />
+          <Checkbox label="問題を公開する" {...register("isPublic")} />
         </Stack>
         <Alert
           mt={30}
