@@ -48,14 +48,17 @@ export const getPlayedQuizzes = async () => {
     throw new Error("ログインしてください");
   }
 
-  const playedQuizzes = await db.query.quizzes.findMany({
-    where: eq(quizzes.isPublic, 1),
-    with: {
-      challengers: {
-        where: eq(challengers.challengerId, challengerId),
+  const playedQuizzes = await db.query.quizzes
+    .findMany({
+      where: eq(quizzes.isPublic, 1),
+      with: {
+        challengers: {
+          where: eq(challengers.challengerId, challengerId),
+        },
       },
-    },
-  });
+    })
+    // filterしないと、challengersが空のものも返ってくる
+    .then((quizzes) => quizzes.filter((q) => q.challengers.length > 0));
 
   return playedQuizzes;
 };
