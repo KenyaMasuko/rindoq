@@ -14,7 +14,6 @@ import {
 import React from "react";
 import { useRouter } from "next/navigation";
 import { BurnedToast, MyToaster } from "@/app/_components/Toast";
-import { useToggle } from "@mantine/hooks";
 
 export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
   const [answer, setAnswer] = React.useState<number[]>([]);

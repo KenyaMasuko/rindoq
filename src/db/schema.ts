@@ -84,7 +84,7 @@ export const choicesRelations = relations(choices, ({ one }) => ({
 export type Quizzes = InferSelectModel<typeof quizzes>;
 export type NewQuiz = InferInsertModel<typeof quizzes>;
 
-export type challengers = InferSelectModel<typeof challengers>;
+export type Challengers = InferSelectModel<typeof challengers>;
 export type NewChallengers = InferInsertModel<typeof challengers>;
 
 export type Questions = InferSelectModel<typeof questions>;

@@ -1,1 +1,20 @@
-{"version":"5","dialect":"mysql","entries":[{"idx":4,"version":"5","when":1696521852990,"tag":"0004_breezy_snowbird","breakpoints":true},{"idx":5,"version":"5","when":1696521897628,"tag":"0005_perpetual_vulcan","breakpoints":true}]}
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1696521852990,
+      "tag": "0004_breezy_snowbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1696521897628,
+      "tag": "0005_perpetual_vulcan",
+      "breakpoints": true
+    }
+  ]
+}
