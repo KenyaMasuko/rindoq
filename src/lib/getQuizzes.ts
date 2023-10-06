@@ -1,15 +1,22 @@
 import { db } from "@/db";
+import { quizzes } from "@/db/schema";
 import { clerkClient } from "@clerk/nextjs";
+import { eq } from "drizzle-orm";
 
-export const getQuizzes = async () => {
-  const quizzes = await db.query.quizzes.findMany({
+export const getQuizzes = async ({
+  includePrivateQuiz,
+}: {
+  includePrivateQuiz: boolean;
+}) => {
+  const data = await db.query.quizzes.findMany({
     with: {
       challengers: true,
     },
+    where: includePrivateQuiz ? undefined : eq(quizzes.isPublic, 1),
   });
 
   const quizzesWithProfile = await Promise.all(
-    quizzes.map(async (quiz) => {
+    data.map(async (quiz) => {
       const creatorId = quiz.creatorId;
 
       const creatorImage = await clerkClient.users

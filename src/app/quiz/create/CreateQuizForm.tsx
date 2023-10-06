@@ -5,6 +5,7 @@ import {
   Anchor,
   Button,
   Center,
+  Checkbox,
   Flex,
   Grid,
   GridCol,
@@ -30,6 +31,7 @@ const schema = v.object({
   description: v.string("説明文", [
     v.minLength(1, "説明文を入力してください。"),
   ]),
+  isPublic: v.transform(v.boolean(), (input) => Number(input)),
   quiz: v.array(
     v.object({
       title: v.string("問題文", [v.minLength(1, "問題文を入力してください。")]),
@@ -138,6 +140,7 @@ export const CreateQuizForm = () => {
             required
             {...register("description")}
           />
+          <Checkbox label="問題を公開する" {...register("isPublic")} />
         </Stack>
         <Alert
           mt={30}

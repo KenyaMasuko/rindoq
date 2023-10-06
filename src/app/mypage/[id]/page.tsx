@@ -2,6 +2,7 @@ import { Confirm } from "@/app/mypage/[id]/Confirm";
 import { deleteQuizAction } from "@/lib/action";
 import { getQuizWithChallenger } from "@/lib/getQuiz";
 import {
+  Badge,
   Box,
   Button,
   Card,
@@ -18,6 +19,7 @@ import Link from "next/link";
 import classes from "./page.module.css";
 import { IconCircleCheck, IconCircleDashed } from "@tabler/icons-react";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "りんどQ | くいず詳細",
@@ -25,9 +27,19 @@ export const metadata: Metadata = {
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const quiz = await getQuizWithChallenger(Number(params.id));
-  if (!quiz) return <div>くいずが見つかりませんでした</div>;
+  if (!quiz) return notFound();
 
   const joined = quiz.challengers.length;
+
+  const PublicStatus = quiz.isPublic ? (
+    <Badge color="blue" size="lg">
+      公開中
+    </Badge>
+  ) : (
+    <Badge color="gray" size="lg">
+      下書き
+    </Badge>
+  );
 
   return (
     <Box pb={100}>
@@ -54,12 +66,15 @@ const Page = async ({ params }: { params: { id: string } }) => {
         </div>
       </Stack>
 
-      <Text className={classes.lead} mt={30}>
-        {joined}人
-      </Text>
-      <Text fz="xs" c="dimmed">
-        参加人数
-      </Text>
+      <Flex align="center" justify="space-between" mt={30}>
+        <div>
+          <Text className={classes.lead}>{joined}人</Text>
+          <Text fz="xs" c="dimmed">
+            参加人数
+          </Text>
+        </div>
+        {PublicStatus}
+      </Flex>
 
       <Stack mt="md">
         {quiz.questions.map((x, i) => {

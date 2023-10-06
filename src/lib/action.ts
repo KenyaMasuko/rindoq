@@ -46,6 +46,7 @@ export const createQuizAction = async (
   const data = {
     title: formData.title,
     description: formData.description,
+    isPublic: formData.isPublic,
     creatorId,
     quiz: choices,
   };
@@ -100,6 +101,7 @@ export const updateQuizAction = async (
     id: formData.id,
     title: formData.title,
     description: formData.description,
+    isPublic: formData.isPublic,
     creatorId,
     quiz: choices,
   };
@@ -111,7 +113,7 @@ export const updateQuizAction = async (
 
 export const recordResultAction = async (
   formData: any
-): Promise<{ message: string }> => {
+): Promise<{ id: string }> => {
   const { userId: challengerId } = auth();
   if (!challengerId) {
     throw new Error("ログインしてください");
@@ -122,8 +124,8 @@ export const recordResultAction = async (
     score: formData.score,
     challengerId,
   };
-
   const res = await recordScore(data);
+  if (res.id === challengerId) throw new Error("すでに回答済みのユーザーです");
 
   return res;
 };

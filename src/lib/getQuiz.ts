@@ -1,6 +1,5 @@
 import { db } from "@/db";
 import { quizzes } from "@/db/schema";
-import { clerkClient } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 
 export const getQuiz = async (id: number) => {

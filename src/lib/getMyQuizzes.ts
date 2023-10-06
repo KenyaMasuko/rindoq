@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { challnegers, quizzes } from "@/db/schema";
+import { challengers, quizzes } from "@/db/schema";
 import { auth } from "@clerk/nextjs";
 import { clerkClient } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
@@ -48,12 +48,17 @@ export const getPlayedQuizzes = async () => {
     throw new Error("ログインしてください");
   }
 
-  const playedQuizzes = await db.query.challnegers.findMany({
-    where: eq(challnegers.challengerId, challengerId),
-    with: {
-      quiz: true,
-    },
-  });
+  const playedQuizzes = await db.query.quizzes
+    .findMany({
+      where: eq(quizzes.isPublic, 1),
+      with: {
+        challengers: {
+          where: eq(challengers.challengerId, challengerId),
+        },
+      },
+    })
+    // filterしないと、challengersが空のものも返ってくる
+    .then((quizzes) => quizzes.filter((q) => q.challengers.length > 0));
 
   return playedQuizzes;
 };

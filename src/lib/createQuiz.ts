@@ -20,6 +20,7 @@ export const createQuiz = async (
     title: form.title,
     description: form.description,
     creatorId: form.creatorId,
+    isPublic: form.isPublic,
   });
 
   for (let i = 0; i < form.quiz.length; i++) {

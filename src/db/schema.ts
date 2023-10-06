@@ -19,15 +19,21 @@ export const quizzes = mysqlTable("quizzes", {
   creatorId: varchar("creator_id", { length: 255 }).notNull(),
   title: varchar("title", { length: 255 }).notNull(),
   description: text("description"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  isPublic: int("is_public").default(0).notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull()
+    .onUpdateNow(),
 });
 export const quizzesRelations = relations(quizzes, ({ many }) => ({
   questions: many(questions),
-  challengers: many(challnegers),
+  challengers: many(challengers),
 }));
 
-export const challnegers = mysqlTable("challnegers", {
+export const challengers = mysqlTable("challengers", {
   id: serial("id").primaryKey(),
   quizId: int("quiz_id").notNull(),
   score: json("score").$type<number[]>().notNull(),
@@ -40,9 +46,9 @@ export const challnegers = mysqlTable("challnegers", {
     .notNull()
     .onUpdateNow(),
 });
-export const challengersRelations = relations(challnegers, ({ one }) => ({
+export const challengersRelations = relations(challengers, ({ one }) => ({
   quiz: one(quizzes, {
-    fields: [challnegers.quizId],
+    fields: [challengers.quizId],
     references: [quizzes.id],
   }),
 }));
@@ -78,8 +84,8 @@ export const choicesRelations = relations(choices, ({ one }) => ({
 export type Quizzes = InferSelectModel<typeof quizzes>;
 export type NewQuiz = InferInsertModel<typeof quizzes>;
 
-export type Challnegers = InferSelectModel<typeof challnegers>;
-export type NewChallnegers = InferInsertModel<typeof challnegers>;
+export type Challengers = InferSelectModel<typeof challengers>;
+export type NewChallengers = InferInsertModel<typeof challengers>;
 
 export type Questions = InferSelectModel<typeof questions>;
 export type NewQuestions = InferInsertModel<typeof questions>;

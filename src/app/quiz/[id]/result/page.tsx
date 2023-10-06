@@ -19,7 +19,7 @@ import {
   IconCircleCheck,
   IconPointFilled,
 } from "@tabler/icons-react";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -35,7 +35,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     redirect(`/quiz/${params.id}/play`);
   }
   if (!quiz) {
-    return <div>クイズが見つかりませんでした</div>;
+    return notFound();
   }
 
   const completed = result.score.filter((x) => x === 1).length;
