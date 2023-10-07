@@ -6,6 +6,7 @@ import { recordScore } from "@/lib/recordScore";
 import { updateQuiz } from "@/lib/updateQuiz";
 import { deleteQuiz } from "./deleteQuiz";
 import { redirect } from "next/navigation";
+import { createQuestions } from "@/lib/createQuestions";
 
 export const createQuizAction = async (
   formData: any
@@ -97,18 +98,22 @@ export const updateQuizAction = async (
     return { questions, choices };
   });
 
+  const updateQuestions = choices.filter((choice: any) => choice.questions.id);
+  const newQuestions = choices.filter((choice: any) => !choice.questions.id);
+
   const data = {
     id: formData.id,
     title: formData.title,
     description: formData.description,
     isPublic: formData.isPublic,
     creatorId,
-    quiz: choices,
+    quiz: updateQuestions,
   };
 
-  const res = await updateQuiz(data);
+  await updateQuiz(data);
+  await createQuestions(newQuestions, formData.id);
 
-  return res;
+  return { message: "ok" };
 };
 
 export const recordResultAction = async (
