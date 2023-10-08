@@ -7,6 +7,7 @@ import { updateQuiz } from "@/lib/updateQuiz";
 import { deleteQuiz } from "./deleteQuiz";
 import { redirect } from "next/navigation";
 import { createQuestions } from "@/lib/createQuestions";
+import { deleteQuestions } from "@/lib/deleteQuestion";
 
 export const createQuizAction = async (
   formData: any
@@ -57,17 +58,19 @@ export const createQuizAction = async (
   return res;
 };
 
-export const updateQuizAction = async (
-  formData: any
-): Promise<{ message: string }> => {
+export const updateQuizAction = async (formData: {
+  data: Record<string, any>;
+  deleteQuizIds: number[];
+}): Promise<{ message: string }> => {
   const { userId: creatorId } = auth();
   if (!creatorId) {
     throw new Error("ログインしてください");
   }
+  const deleteQuizIdsString = formData.deleteQuizIds.map((id) => id.toString());
 
-  const choices = formData.quiz.map((choice: any) => {
+  const choices = formData.data.quiz.map((choice: any) => {
     const questions = {
-      id: choice.id,
+      id: choice.originalId,
       body: choice.title,
       explanation: choice.explanation,
     };
@@ -102,16 +105,17 @@ export const updateQuizAction = async (
   const newQuestions = choices.filter((choice: any) => !choice.questions.id);
 
   const data = {
-    id: formData.id,
-    title: formData.title,
-    description: formData.description,
-    isPublic: formData.isPublic,
+    id: formData.data.id,
+    title: formData.data.title,
+    description: formData.data.description,
+    isPublic: formData.data.isPublic,
     creatorId,
     quiz: updateQuestions,
   };
 
   await updateQuiz(data);
-  await createQuestions(newQuestions, formData.id);
+  await createQuestions(newQuestions, formData.data.id);
+  await deleteQuestions(deleteQuizIdsString);
 
   return { message: "ok" };
 };
