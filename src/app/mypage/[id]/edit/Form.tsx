@@ -23,6 +23,7 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import Link from "next/link";
 import { BurnedToast, MyToaster, Toast } from "@/app/_components/Toast";
 import { useRouter } from "next/navigation";
+import React from "react";
 
 const CHOICES_NUM = 4;
 
@@ -35,7 +36,8 @@ const schema = v.object({
   isPublic: v.transform(v.boolean(), (input) => Number(input)),
   quiz: v.array(
     v.object({
-      id: v.nullable(v.number()),
+      // useFieldArrayのidに上書きされるため削除するQuizのidを保持するためにoriginalIdに変更
+      originalId: v.nullable(v.number()),
       title: v.string("問題文", [v.minLength(1, "問題文を入力してください。")]),
       explanation: v.string("解説文", [
         v.minLength(1, "解説文を入力してください。"),
@@ -82,7 +84,7 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
     resolver: valibotResolver(schema),
     defaultValues: props.data,
   });
-
+  const [deleteQuizIds, setDeleteQuizIds] = React.useState<number[]>([]);
   const router = useRouter();
 
   const { fields, append, remove } = useFieldArray({
@@ -90,8 +92,13 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
     name: "quiz",
   });
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (form) => {
     if (!confirm("くいずを更新しますか？")) return;
+
+    const data = {
+      data: form,
+      deleteQuizIds,
+    };
 
     const res = await fetch(`/api/quiz`, {
       method: "PUT",
@@ -156,12 +163,24 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
           各問題につき<Text fw="bold">1つのラジオボタンを選択して </Text>
           正解を指定してください。
         </Alert>
-
         {fields.map((field, index) => (
           <div key={field.id}>
             <Group justify="space-between" mt="sm">
               <Title order={3}>問題{index + 1}</Title>
-              <Button type="button" color="red" onClick={() => remove(index)}>
+              <Button
+                type="button"
+                color="red"
+                onClick={() => {
+                  setDeleteQuizIds((prev) => {
+                    if (field.originalId == undefined) {
+                      return prev;
+                    }
+
+                    return [...prev, field.originalId];
+                  });
+                  remove(index);
+                }}
+              >
                 削除
               </Button>
             </Group>
@@ -233,7 +252,7 @@ export const QuizEditForm: React.FC<{ data: QuizEditFormProps }> = (props) => {
             type="button"
             onClick={() =>
               append({
-                id: null,
+                originalId: null,
                 title: "",
                 explanation: "",
                 choice1: {

@@ -17,7 +17,8 @@ export default async function Page({ params }: { params: { id: string } }) {
     description: quiz.description as string,
     isPublic: !!quiz.isPublic,
     quiz: quiz.questions.map((q) => ({
-      id: q.id,
+      // NOTE: useFieldArrayのidに上書きされるため削除するQuizのidを保持するためにoriginalIdに変更
+      originalId: q.id,
       title: q.body,
       explanation: q.explanation as string,
       choice1: {
