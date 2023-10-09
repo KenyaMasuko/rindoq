@@ -1,5 +1,5 @@
 import { QuizEditForm, QuizEditFormProps } from "@/app/mypage/[id]/edit/Form";
-import { getQuiz } from "@/lib/getQuiz";
+import { getMyQuiz } from "@/lib/getQuiz";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const quiz = await getQuiz(Number(params.id));
+  const quiz = await getMyQuiz(Number(params.id));
   if (!quiz) return notFound();
 
   const data = {
