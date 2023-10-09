@@ -1,6 +1,6 @@
 import { Confirm } from "@/app/mypage/[id]/Confirm";
 import { deleteQuizAction } from "@/lib/action";
-import { getQuizWithChallenger } from "@/lib/getQuiz";
+import { getMyQuizWithChallenger } from "@/lib/getQuiz";
 import {
   Badge,
   Box,
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const quiz = await getQuizWithChallenger(Number(params.id));
+  const quiz = await getMyQuizWithChallenger(Number(params.id));
   if (!quiz) return notFound();
 
   const joined = quiz.challengers.length;
