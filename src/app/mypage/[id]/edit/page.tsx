@@ -1,5 +1,5 @@
 import { QuizEditForm, QuizEditFormProps } from "@/app/mypage/[id]/edit/Form";
-import { getQuiz } from "@/lib/getQuiz";
+import { getMyQuiz } from "@/lib/getQuiz";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const quiz = await getQuiz(Number(params.id));
+  const quiz = await getMyQuiz(Number(params.id));
   if (!quiz) return notFound();
 
   const data = {
@@ -17,7 +17,8 @@ export default async function Page({ params }: { params: { id: string } }) {
     description: quiz.description as string,
     isPublic: !!quiz.isPublic,
     quiz: quiz.questions.map((q) => ({
-      id: q.id,
+      // NOTE: useFieldArrayのidに上書きされるため削除するQuizのidを保持するためにoriginalIdに変更
+      originalId: q.id,
       title: q.body,
       explanation: q.explanation as string,
       choice1: {
