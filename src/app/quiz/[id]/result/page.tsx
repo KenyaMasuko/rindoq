@@ -28,8 +28,10 @@ export const metadata: Metadata = {
 };
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const result = await getRecord(Number(params.id));
-  const quiz = await getQuiz(Number(params.id));
+  const [result, quiz] = await Promise.all([
+    getRecord(Number(params.id)),
+    getQuiz(Number(params.id)),
+  ]);
 
   if (!result) {
     redirect(`/quiz/${params.id}/play`);

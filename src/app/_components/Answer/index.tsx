@@ -2,7 +2,6 @@
 
 import { GetQuiz } from "@/lib/getQuiz";
 import {
-  Box,
   Button,
   Grid,
   GridCol,
