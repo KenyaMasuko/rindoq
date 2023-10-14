@@ -20,8 +20,10 @@ export const metadata: Metadata = {
 };
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const quiz = await getQuizWithChallenger(Number(params.id));
-  const result = await getRecord(Number(params.id));
+  const [quiz, result] = await Promise.all([
+    getQuizWithChallenger(Number(params.id)),
+    getRecord(Number(params.id)),
+  ]);
   if (!quiz) return notFound();
 
   return (
