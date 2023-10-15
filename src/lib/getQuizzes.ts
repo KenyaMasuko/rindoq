@@ -10,7 +10,7 @@ export const getQuizzes = async ({
 }) => {
   const data = await db.query.quizzes.findMany({
     with: {
-      challengers: true,
+      answers: true,
     },
     where: includePrivateQuiz ? undefined : eq(quizzes.isPublic, 1),
   });

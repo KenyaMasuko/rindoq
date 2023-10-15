@@ -130,8 +130,8 @@ export const recordResultAction = async (
 
   const data = {
     quizId: formData.quizId,
-    score: formData.score,
     challengerId,
+    answers: formData.answers,
   };
   const res = await recordScore(data);
   if (res.id === challengerId) throw new Error("すでに回答済みのユーザーです");

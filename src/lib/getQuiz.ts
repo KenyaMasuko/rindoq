@@ -29,7 +29,7 @@ export const getQuizWithChallenger = async (id: number) => {
           choices: true,
         },
       },
-      challengers: true,
+      answers: true,
     },
   });
 
@@ -63,7 +63,11 @@ export const getMyQuizWithChallenger = async (id: number) => {
           choices: true,
         },
       },
-      challengers: true,
+      answers: {
+        with: {
+          choice: true,
+        },
+      },
     },
   });
 

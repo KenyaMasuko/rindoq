@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { challengers, quizzes } from "@/db/schema";
+import { answers, quizzes } from "@/db/schema";
 import { auth } from "@clerk/nextjs";
 import { clerkClient } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
@@ -13,13 +13,13 @@ export const getMyQuizzes = async () => {
   const myQuizzes = await db.query.quizzes.findMany({
     where: eq(quizzes.creatorId, creatorId),
     with: {
-      challengers: true,
+      answers: true,
     },
   });
 
   const quizzesWithProfile = await Promise.all(
-    myQuizzes.map(async ({ challengers, ...rest }) => {
-      const challengerIds = challengers.map((c) => c.challengerId);
+    myQuizzes.map(async ({ answers, ...rest }) => {
+      const challengerIds = answers.map((c) => c.challengerId);
       if (challengerIds.length === 0) {
         return { ...rest, challengersImage: [] };
       }
@@ -52,13 +52,13 @@ export const getPlayedQuizzes = async () => {
     .findMany({
       where: eq(quizzes.isPublic, 1),
       with: {
-        challengers: {
-          where: eq(challengers.challengerId, challengerId),
+        answers: {
+          where: eq(answers.challengerId, challengerId),
         },
       },
     })
     // filterしないと、challengersが空のものも返ってくる
-    .then((quizzes) => quizzes.filter((q) => q.challengers.length > 0));
+    .then((quizzes) => quizzes.filter((q) => q.answers.length > 0));
 
   return playedQuizzes;
 };

@@ -29,7 +29,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const quiz = await getMyQuizWithChallenger(Number(params.id));
   if (!quiz) return notFound();
 
-  const joined = quiz.challengers.length;
+  const joined = quiz.answers.length;
 
   const PublicStatus = quiz.isPublic ? (
     <Badge color="blue" size="lg">
@@ -78,8 +78,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
       <Stack mt="md">
         {quiz.questions.map((x, i) => {
-          const correctAnswer = quiz.challengers.filter(
-            (q) => q.score[i]
+          const correctAnswer = quiz.answers.filter(
+            (q) => q.choice.isCorrect
           ).length;
 
           return (

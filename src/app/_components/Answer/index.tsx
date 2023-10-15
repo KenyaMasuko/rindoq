@@ -35,7 +35,7 @@ export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
         method: "POST",
         body: JSON.stringify({
           quizId: props?.quiz?.id,
-          score: answer,
+          answers: answer,
         }),
       });
       const json = await res.json();
@@ -81,7 +81,7 @@ export const Answer: React.FC<{ quiz: GetQuiz }> = (props) => {
                     setSelectedChoice(y.id);
                     setAnswer((prev) => {
                       const newArray = [...prev.slice(0, currentQuestionNum)];
-                      return [...newArray, y.isCorrect];
+                      return [...newArray, y.id];
                     });
                   }}
                 >

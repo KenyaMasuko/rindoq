@@ -19,7 +19,7 @@ import {
   IconCircleCheck,
   IconPointFilled,
 } from "@tabler/icons-react";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -28,21 +28,17 @@ export const metadata: Metadata = {
 };
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const [result, quiz] = await Promise.all([
+  const [results, quiz] = await Promise.all([
     getRecord(Number(params.id)),
     getQuiz(Number(params.id)),
   ]);
 
-  if (!result) {
-    redirect(`/quiz/${params.id}/play`);
-  }
   if (!quiz) {
     return notFound();
   }
 
-  const completed = result.score.filter((x) => x === 1).length;
-  const total = result.score.length;
-
+  const completed = results.filter((res) => res.choice.isCorrect).length;
+  const total = quiz.questions.length;
   return (
     <Box pb={100}>
       <Card withBorder p="xl" radius="md" className={classes.card}>
@@ -115,7 +111,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                       <ListItem
                         key={choice.id}
                         icon={
-                          result.score[i] ? (
+                          results[i].choice.isCorrect ? (
                             <ThemeIcon color="teal" size={24} radius="xl">
                               <IconCircleCheck size="1rem" />
                             </ThemeIcon>

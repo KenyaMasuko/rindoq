@@ -39,26 +39,23 @@ const Page = async ({ params }: { params: { id: string } }) => {
             {quiz.title}
           </Text>
         </h1>
-
         <Text className={classes.description}>{quiz?.description}</Text>
-
         <Group className={classes.controls} justify="space-between">
           <Group justify="space-between" gap="md">
-            {result ? (
-              <Link href={`/quiz/${params.id}/result`}>
-                <Button size="sm" className={classes.control} variant="light">
-                  前回の回答を見る
-                </Button>
-              </Link>
-            ) : (
+            {result.length === 0 ? (
               <Link href={`/quiz/${params.id}/play`}>
                 <Button size="sm" className={classes.control}>
                   このクイズで遊ぶ
                 </Button>
               </Link>
+            ) : (
+              <Link href={`/quiz/${params.id}/result`}>
+                <Button size="sm" className={classes.control} variant="light">
+                  前回の回答を見る
+                </Button>
+              </Link>
             )}
           </Group>
-
           <Link href="/">
             <Button
               component="a"
