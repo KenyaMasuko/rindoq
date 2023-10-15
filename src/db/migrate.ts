@@ -3,6 +3,7 @@ import { drizzle } from "drizzle-orm/planetscale-serverless";
 import { migrate } from "drizzle-orm/planetscale-serverless/migrator";
 import drizzleConfig from "../../drizzle.config";
 
+/* eslint-disable no-console */
 const runMigrate = async () => {
   console.log("Connecting to database...");
   if (!process.env.DATABASE_URL) {
