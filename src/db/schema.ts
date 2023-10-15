@@ -6,7 +6,6 @@ import {
 } from "drizzle-orm";
 import {
   int,
-  json,
   mysqlTable,
   serial,
   text,
@@ -30,14 +29,14 @@ export const quizzes = mysqlTable("quizzes", {
 });
 export const quizzesRelations = relations(quizzes, ({ many }) => ({
   questions: many(questions),
-  challengers: many(challengers),
+  answers: many(answers),
 }));
 
-export const challengers = mysqlTable("challengers", {
+export const answers = mysqlTable("answers", {
   id: serial("id").primaryKey(),
-  quizId: int("quiz_id").notNull(),
-  score: json("score").$type<number[]>().notNull(),
   challengerId: varchar("challenger_id", { length: 255 }).notNull(),
+  quizId: int("quiz_id").notNull(),
+  choiceId: int("choice_id").notNull(),
   createdAt: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -46,10 +45,14 @@ export const challengers = mysqlTable("challengers", {
     .notNull()
     .onUpdateNow(),
 });
-export const challengersRelations = relations(challengers, ({ one }) => ({
+export const answersRelations = relations(answers, ({ one }) => ({
   quiz: one(quizzes, {
-    fields: [challengers.quizId],
+    fields: [answers.quizId],
     references: [quizzes.id],
+  }),
+  choice: one(choices, {
+    fields: [answers.choiceId],
+    references: [choices.id],
   }),
 }));
 
@@ -74,21 +77,22 @@ export const choices = mysqlTable("choices", {
   isCorrect: int("is_correct").notNull(),
 });
 
-export const choicesRelations = relations(choices, ({ one }) => ({
+export const choicesRelations = relations(choices, ({ one, many }) => ({
   question: one(questions, {
     fields: [choices.questionId],
     references: [questions.id],
   }),
+  answers: many(answers),
 }));
 
 export type Quizzes = InferSelectModel<typeof quizzes>;
 export type NewQuiz = InferInsertModel<typeof quizzes>;
 
-export type Challengers = InferSelectModel<typeof challengers>;
-export type NewChallengers = InferInsertModel<typeof challengers>;
-
 export type Questions = InferSelectModel<typeof questions>;
 export type NewQuestions = InferInsertModel<typeof questions>;
+
+export type Answers = InferSelectModel<typeof answers>;
+export type NewAnswers = InferInsertModel<typeof answers>;
 
 export type Choices = InferSelectModel<typeof choices>;
 export type NewChoices = InferInsertModel<typeof choices>;
